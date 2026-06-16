@@ -751,15 +751,33 @@ function tmplOcr(ctx){const a=procActName(ctx);return `<div class="formpage">
   <div class="frow" style="margin-top:8px">申請年月日　令和　　年　　月　　日</div>
   <div class="f-note" style="margin-top:8px">※ 第1号様式の主要項目を抜粋した記入確認用です。正式申請は公式OCRシート（窓口／専用作成）で行ってください。</div>
 </div>`;}
-const FORM_TEMPLATES={inin:tmplInin,joto:tmplJoto,riyu:tmplRiyu,kei_irai:tmplKeiIrai,bunkatsu:tmplBunkatsu,tesuryo:tmplTesuryo,ocr:tmplOcr};
-function enrichForms(procs){for(const p of (procs||[])){for(const dc of (p.docs||[])){const n=dc.name||'';const keep=dc.form&&!/youshiki\.html$/.test(dc.form);
+function tmplKeiOcr(ctx){const a=procActName(ctx);return `<div class="formpage">
+  <h2 style="letter-spacing:.2em">軽自動車 申請書（第1号様式 相当）</h2>
+  <div class="f-note" style="text-align:center;margin-top:-6px">軽自動車検査協会用／※ 下書き・記入確認用。窓口では公式OCRシートに記入してください。</div>
+  <div class="frow" style="margin-top:10px">手続きの種類　<span class="f-fill" style="width:40%;text-align:center">${esc(a)}</span></div>
+  <table class="fbox">
+    <tr><th style="width:34%">車両番号</th><td></td></tr>
+    <tr><th>車台番号</th><td></td></tr>
+    <tr><th>車名 / 型式</th><td></td></tr>
+  </table>
+  <div class="frow" style="margin-top:6px">所有者</div>
+  <table class="fbox"><tr><th style="width:22%">氏名・名称</th><td></td></tr><tr><th>住所</th><td style="height:38px"></td></tr></table>
+  <div class="frow">使用者（所有者と同じ場合は「同上」）</div>
+  <table class="fbox"><tr><th style="width:22%">氏名・名称</th><td></td></tr><tr><th>住所</th><td style="height:38px"></td></tr>
+  <tr><th>使用の本拠の位置</th><td style="height:32px"></td></tr></table>
+  <div class="frow" style="margin-top:8px">申請年月日　令和　　年　　月　　日</div>
+  <div class="f-note" style="margin-top:8px">※ 軽自動車は実印・印鑑証明は不要（認印で可）。正式申請は軽自動車検査協会の公式OCRシートで行ってください。</div>
+</div>`;}
+const FORM_TEMPLATES={inin:tmplInin,joto:tmplJoto,riyu:tmplRiyu,kei_irai:tmplKeiIrai,bunkatsu:tmplBunkatsu,tesuryo:tmplTesuryo,ocr:tmplOcr,kei_ocr:tmplKeiOcr};
+function enrichForms(procs){for(const p of (procs||[])){const kei=p.vehicle==='kei';for(const dc of (p.docs||[])){const n=dc.name||'';const keep=dc.form&&!/youshiki\.html$/.test(dc.form);
   if(/譲渡証明/.test(n)){dc.tmpl='joto';if(!keep)dc.form=FORM_PDF.joto;}
+  else if(/申請依頼書/.test(n)){dc.tmpl='kei_irai';}
   else if(/委任状|委任/.test(n)){dc.tmpl='inin';if(!keep)dc.form=FORM_PDF.inin;}
   else if(/理由書/.test(n)){dc.tmpl='riyu';if(!keep)dc.form=FORM_PDF.riyu;}
-  else if(/申請依頼書/.test(n)){dc.tmpl='kei_irai';}
   else if(/手数料納付書/.test(n)){dc.tmpl='tesuryo';if(!keep)dc.form=FORM_PDF.tesuryo;}
   else if(/遺産分割協議書/.test(n)){dc.tmpl='bunkatsu';if(!keep)dc.form=FORM_PDF.bunkatsu;}
   else if(/戸籍/.test(n)){if(!keep)dc.form=FORM_PDF.souzoku;}
+  else if(kei&&/記入申請書|^申請書|返納届/.test(n)){dc.tmpl='kei_ocr';}
   else if(/^申請書|OCR/.test(n)){dc.tmpl='ocr';if(!keep)dc.form=FORM_OCR;}
   if(dc.form&&/youshiki\.html$/.test(dc.form))dc.form='';/* 一覧ページ止まりは個別PDFが無いのでリンク非表示 */
 }}}
