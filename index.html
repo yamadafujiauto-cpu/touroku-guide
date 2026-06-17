@@ -47,6 +47,7 @@
     padding:8px 15px;border-radius:999px;cursor:pointer;white-space:nowrap;font-family:inherit}
   nav.tabs button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
   main{max-width:880px;margin:0 auto;padding:14px}
+  .review-banner{background:#fff3cd;border:1px solid #f0c97a;color:#7a5400;border-radius:10px;padding:10px 13px;font-size:13px;font-weight:700;margin-bottom:12px;text-align:center}
   .view{display:none;animation:fade .2s ease}
   .view.active{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -153,7 +154,7 @@
   /* print */
   #printArea{display:none}
   @media print{
-    header.app,nav.tabs,.view,.toast{display:none !important}
+    header.app,nav.tabs,.view,.toast,.review-banner{display:none !important}
     #printArea{display:block !important}
     body{background:#fff;padding:0}
     @page{size:A4;margin:14mm}
@@ -194,6 +195,7 @@
 </nav>
 
 <main>
+  <div class="review-banner">⚠ この内容は<b>確認中</b>です（河方・松隈さん監修待ち）。最終判断は窓口・担当者にご確認ください。</div>
   <!-- ====== ガイド（ウィザード） ====== -->
   <section class="view active" id="view-guide">
     <div class="panel">
